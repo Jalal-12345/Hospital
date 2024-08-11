@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="shortcut icon" href="../image/تنزيل.jpeg" type="image/x-icon" />
+    <link rel="stylesheet" href="Custody.css" />
+    <link rel="stylesheet" href="../main.css">
+    <title>العهدة</title>
+  </head>
+
+  <body>
+    
+
+    <!-- loader -->
+    <div class="loader">
+      <div class="wrapper">
+        <div class="box-wrap">
+            <div class="box one"></div>
+            <div class="box two"></div>
+            <div class="box three"></div>
+            <div class="box four"></div>
+            <div class="box five"></div>
+            <div class="box six"></div>
+        </div>
+    </div>
+    </div>
+
+
+    <header>
+      <img src="../image/images.png" alt="" />
+      <ul>
+        <li><a href="../Home/index.html">الرئيسية</a></li>
+        <li>العهدة</li>
+        <li>المواد المرجعة</li>
+        <li>المواد المنصرفة</li>
+      </ul>
+    </header>
+
+    <div class="continer">
+
+      <div class="link">
+        <h3>الرئيسية >>> العهدة</h3>
+      </div>
+
+      <div class="tools">
+      <div class="group">
+          <button class="create">
+            <i class="fa-solid fa-plus"></i><strong>إضافة العهدة</strong>
+          </button>
+          <select class="selectSection">
+            <option selected hidden disabled>إختار القسم</option>
+            <option value="الموارد ذاتية"> الموارد ذاتية</option>
+            <option value="التمريض">التمريض</option>
+          </select>
+      </div>
+        <button onclick="Print()">طباعة</button>
+        <div class="box-Search">
+          <select>
+            <option disabled hidden selected>فلتر البحث</option>
+            <option value="CardNumber">رقم البطاقة</option>
+            <option value="TypeCustody">نوع العهدة</option>
+            <option value="DescriptionCustody">وصف العهدة</option>
+            <option value="ManufactureCompany">الشركة المصنعة</option>
+            <option value="Code">رقم المصنع(كود)</option>
+            <option value="LocationCustody">موقع العهدة</option>
+            <option value="ExchangeDate">تاريخ الصرف</option>
+            <option value="ItemCondition">حالة الصنف</option>
+            <option value="DateOfExclusion">تاريخ الإستبعاد</option>
+          </select>
+          <div class="input-group">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input
+              type="text"
+              placeholder="البحث"
+              onkeyup="searchCostody(this.value)"
+              id="InputSearch"
+            />
+          </div>
+        </div>
+      </div>
+    <div class="content-table">
+        <table>
+          <thead>
+            <tr class="main">
+              <th>حالة الصنف</th>
+              <th>تاريخ الصرف</th>
+              <th>موقع العهدة</th>
+              <th>رقم المصنع(كود)</th>
+              <th>الشركة المصنعة</th>
+              <th>وصف العهدة</th>
+              <th>نوع العهدة</th>
+              <th>رقم البطاقة</th>
+              <th>مسؤول القسم</th>
+              <th>تعديل</th>
+              <th>حذف</th>
+              <th>ترجيع</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+    </div>
+    </div>
+
+    <div class="modal">
+      <div class="close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+          <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+          <path
+            d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
+          />
+        </svg>
+      </div>
+      <div class="modal-content">
+        <form>
+          <div class="input-group">
+            <label>القسم</label>
+            <input class="section" type="text" placeholder="القسم" />
+          </div>
+          <div class="input-group">
+            <label>مسؤول القسم</label>
+            <input
+              class="classResponsible"
+              type="text"
+              placeholder="مسؤول القسم"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>رقم البطاقة</label>
+            <input class="CardNumber" type="text" placeholder="رقم البطاقة" />
+          </div>
+
+          <div class="input-group">
+            <label>نوع العهدة</label>
+            <input class="TypeCustody" type="text" placeholder="نوع العهدة" />
+          </div>
+
+          <div class="input-group">
+            <label>وصف العهدة</label>
+            <textarea
+              class="DescriptionCustody"
+              placeholder="وصف العهدة"
+            ></textarea>
+          </div>
+
+          <div class="input-group">
+            <label>شركة المصنعة</label>
+            <input
+              class="ManufactureCompany"
+              type="text"
+              placeholder="شركة المصنعة"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>رقم المصنع (كود)</label>
+            <input class="Code" type="text" placeholder="رقم المصنع (كود)" />
+          </div>
+
+          <div class="input-group">
+            <label>موقع العهدة</label>
+            <input
+              class="LocationCustody"
+              type="text"
+              placeholder="موقع العهدة"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>تاريخ العهدة</label>
+            <input
+              class="ExchangeDate"
+              type="date"
+              placeholder="تاريخ العهدة"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>حالة الصنف</label>
+            <input class="ItemCondition" type="text" placeholder="حالة الصنف" />
+          </div>
+
+
+          <div class="buttons">
+            <button type="submit" id="submit" value="إرسال">إرسال</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal">
+      <div class="close">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+          <path
+            d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"
+          />
+        </svg>
+      </div>
+      <div class="modal-content">
+        <form>
+          <div class="input-group">
+            <label>رقم الصنف</label>
+            <input class="ItemNo" type="number" placeholder="رقم الصنف" />
+          </div>
+
+          <div class="input-group">
+            <label>إسم الصنف ووصفه</label>
+            <input
+              class="ItemNameAndDescription"
+              type="text"
+              placeholder="إسم الصنف ووصفه"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>الوحدة</label>
+            <input class="alwahda" type="text" placeholder="الوحدة" />
+          </div>
+
+          <div class="input-group">
+            <label>الكمية</label>
+            <input class="Quantity" type="number" placeholder="الكمية" />
+          </div>
+
+
+          <div class="input-group">
+            <label>التاريخ</label>
+            <input class="data" type="date" placeholder="التاريخ" />
+          </div>
+
+          <div class="input-group">
+            <label>الجهة المرجعة	</label>
+            <input
+              class="AljihatAlmurjiea"
+              type="text"
+              placeholder="الجهة المرجعة"
+            />
+          </div>
+
+          <div class="input-group">
+            <label>المسؤول في الجهة الإرجاع	</label>
+            <input class="almaswuwl_fi_aljihat_almurjiea" type="text" placeholder="المسؤول في الجهة الإرجاع" />
+          </div>
+
+          
+          <div class="input-group">
+            <label>أسباب الإرجاع</label>
+            <input class="ReasonsForReturn" type="text" placeholder="أسباب الإرجاع" />
+          </div>
+
+          <div class="buttons">
+            <button id="return">ترجيع</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="box-toast"></div>
+    <script  src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="./Costody.js"></script>
+    <script src="../main.js"></script>
+  </body>
+</html>

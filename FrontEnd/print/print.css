@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap");
+* {
+  font-family: "Tajawal", sans-serif;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row-reverse;
+  margin: 20px 0px;
+  border-bottom: #222 solid 1px;
+  padding: 20px;
+  width: 100%;
+}
+
+header img{
+  height: 100px;
+} 
+
+
+
+table{
+  border-collapse: collapse;
+}
+
+table tbody tr:nth-child(even){
+  background: #eee;
+}
+
+table tbody tr:last-of-type{
+  border-bottom: solid #0077b6;
+}
+
+thead th{
+  background: #0077b6;
+  color: #fff;
+  margin:  0px 10px;
+}
+
+thead th,tbody td{
+  padding: 10px;
+  text-align: center;
+  /* font-size: 10px; */
+}
+
+button{
+  padding: 10px 30px;
+  margin-top: 20px;
+  border: none;
+  background: #0077b6;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sing{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: 20px;
+  font-size: 12px;
+}
+
+@media print {
+  button{
+    display: none;
+  }
+  header img:nth-child(3){
+    width: 100px;
+    height: 50px;
+  }
+  th{
+    background: #0077b6;
+    color: #fff;
+  }
+  th,td{
+    font-size: 13px;
+    border: solid 1px #0077b6;
+  }
+
+  h1{
+    font-size: 20px;
+  }
+}
