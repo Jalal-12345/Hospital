@@ -1,0 +1,210 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+
+.continer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.continer .link{
+  width: 100%;
+  text-align: right;
+  margin-top: 30px;
+}
+
+.continer .link h3{
+  margin-bottom: 30px;
+  margin-right: 20px;
+}
+
+.tools{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.tools button{
+  margin-left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0077b6;
+  border-radius: 20px;
+  border: none;
+  padding: 10px 20px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.tools button > i{
+  margin-right: 10px;
+}
+
+
+.tools .box-Search{
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 25px;
+}
+
+select{
+  border: #0077b6 solid 1px;
+  margin-left: 10px;
+  border-radius: 10px;
+  padding: 10px 20px;
+  outline: none;
+  cursor: pointer;
+}
+
+select option{
+  background: #222;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+
+.tools .input-group{
+  position: relative;
+  top:0px;
+  right: 0px;
+}
+
+.tools .input-group input {
+  padding: 10px 25px;
+  padding-left: 40px;
+  border-radius: 5px;
+  border: solid 1px #0077b6;
+  text-align: right;
+}
+
+.tools .input-group i {
+  position: absolute;
+  top:11px;
+  left: 15px;
+  color: #0077b6;
+}
+
+
+table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+thead tr{
+  background: #0077b6;
+  color: #fff;
+  font-size: 12px;
+}
+
+tbody tr{
+  border-bottom:solid #eee 1px;
+}
+
+td,th{
+  padding:10px;
+  text-align: center;
+}
+td #update, #delete{
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+}
+
+td #update {
+  background: #2d6a4f;
+}
+
+td #delete{
+  background: #d00000;
+}
+
+
+/* modal */
+
+.modal{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  background: rgba(0,0,0,0.2);  
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  animation: forwards 1s modal;
+
+}
+
+.modal .close {
+  width: 20px;
+  height: 20px;
+  background: #d00000;
+  fill: #fff;
+  padding: 15px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+}
+
+.modal-content{
+  background: #fff;
+  padding: 40px;
+  border-radius: 20px;
+}
+
+.modal-content > form{
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr ;
+  gap: 20px;
+}
+
+.modal-content > form > .input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.modal-content > form > .input-group > input{
+  text-align: right;
+  padding: 10px 20px;
+}
+
+.modal-content > form > .buttons > button{
+  background: #0077b6;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+  margin-top: 15px;
+  cursor: pointer;
+  width: 100%;
+}
+
+@keyframes modal{
+  0%{
+    transform: translateY(-110%);
+  }
+
+  100%{
+    transform: translateY(0%);
+  }
+}
+
+
+/* modal end */
