@@ -6,11 +6,11 @@ const loader = document.querySelector(".loader");
 ul_li.forEach(item=>{
   item.addEventListener("click", (e)=>{
     if(e.target.innerText == "العهدة"){
-      window.location  = `http://127.0.0.1:5500/FrontEnd/Custody/Custody.html`
+      window.location  = `https://jalal-12345.github.io/hospital/Custody/Custody.html`
     }else if(e.target.innerText == "المواد المرجعة"){
-      window.location = "http://127.0.0.1:5500/FrontEnd/Almawadu_Almurjiea/Almawadu_Almurjiea.html"
+      window.location = "https://jalal-12345.github.io/hospital/Almawadu_Almurjiea/Almawadu_Almurjiea.html"
     }else if(e.target.innerText == "المواد المنصرفة"){
-      window.location = `http://127.0.0.1:5500/FrontEnd/Almawadu_Almunsarifa/Almunsarifa.html`
+      window.location = `https://jalal-12345.github.io/hospital/Almawadu_Almunsarifa/Almunsarifa.html`
     }
   })
 });
