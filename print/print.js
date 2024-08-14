@@ -20,8 +20,8 @@ async function getData() {
               <th>إسم الصنف ووصفه</th>
               <th>رقم الصنف</th>
 </tr>`;
-    const response = await axios.get("https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almunsarifas").then((res) => res).catch((err) => err);
-    response.data.data.map((item) => dataPro.push(item));
+    const response = await axios.get("http://localhost:3000/api/almawadu-almunsarifas").then((res) => res).catch((err) => err);
+    response.data.map((item) => dataPro.push(item));
 
     return response;
   } else if (Print == "Almawadu_Almurjiea") {
@@ -36,9 +36,9 @@ async function getData() {
             <th>إسم الصنف ووصفه</th>
             <th>رقم الصنف</th>
     </tr>`;
-    const response = await axios.get("https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almurjieas").then((res) => res).catch((err) => err);
-    await response.data.data.map((item) => dataPro.push(item));
-
+    const response = await axios.get("http://localhost:3000/api/almawadu-almurjieas").then((res) => res).catch((err) => err);
+    await response.data.map((item) => dataPro.push(item));
+    
     return response;
   } else if (Print == "Costody") {
     document.querySelector("thead").innerHTML = `
@@ -53,8 +53,8 @@ async function getData() {
               <th>رقم البطاقة</th>
               <th>مسؤول القسم</th>
     </tr>`;
-    const response = await axios.get("https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies").then((res) => res).catch((err) => err);
-    await response.data.data.map((item) => dataPro.push(item));
+    const response = await axios.get("http://localhost:3000/api/custodies").then((res) => res).catch((err) => err);
+    await response.data.map((item) => dataPro.push(item));
 
     return response;
   }
@@ -63,8 +63,10 @@ async function getData() {
 async function ShowData() {
   if (Print == "Almunsarifa") {
     SearchAlmunsarifa();
+    console.log(await getData());
     document.title = "طباعة المواد المنصرفة";
   } else if (Print == "Almawadu_Almurjiea") {
+    console.log(dataPro);
     search_Almawadu_Almurjiea();
     document.title = "طباعة المواد المرجعة";
   } else if (Print == "Costody") {
@@ -82,107 +84,107 @@ async function SearchAlmunsarifa() {
 
     if (Filter != "" && type != "فلتر البحث") {
       if (type == "ItemNameAndDescription") {
-        if (dataPro[i].attributes.ItemNameAndDescription.includes(Filter)) {
+        if (dataPro[i].ItemNameAndDescription.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
            <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
              `;
         }
       } else if (type == "ItemNo") {
-        if (dataPro[i].attributes.ItemNo.includes(Filter)) {
+        if (dataPro[i].ItemNo.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
            <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
            `;
         }
       } else if (type == "alwahda") {
-        if (dataPro[i].attributes.alwahda.includes(Filter)) {
+        if (dataPro[i].alwahda.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
          <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
            `;
         }
       } else if (type == "RaqmAltalab") {
-        if (dataPro[i].attributes.RaqmAltalab.includes(Filter)) {
+        if (dataPro[i].RaqmAltalab.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
            <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
            `;
         }
       } else if (type == "data") {
-        if (dataPro[i].attributes.data.includes(Filter)) {
+        if (dataPro[i].data.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
                <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
            `;
         }
       } else if (type == "aljihatAltaaliba") {
-        if (dataPro[i].attributes.aljihatAltaaliba.includes(Filter)) {
+        if (dataPro[i].aljihatAltaaliba.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
              <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
            `;
         }
       } else if (type == "almustalam") {
-        if (dataPro[i].attributes.almustalam.includes(Filter)) {
+        if (dataPro[i].almustalam.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
                <tr>
-                   <td>${dataPro[i].attributes.almustalam}</td>
-                   <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                   <td>${dataPro[i].attributes.data}</td>
-                   <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                   <td>${dataPro[i].attributes.Quantity}</td>
-                   <td>${dataPro[i].attributes.alwahda}</td>
-                   <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                   <td>${dataPro[i].attributes.ItemNo}</td>
+                   <td>${dataPro[i].almustalam}</td>
+                   <td>${dataPro[i].aljihatAltaaliba}</td>
+                   <td>${dataPro[i].data}</td>
+                   <td>${dataPro[i].RaqmAltalab}</td>
+                   <td>${dataPro[i].Quantity}</td>
+                   <td>${dataPro[i].alwahda}</td>
+                   <td>${dataPro[i].ItemNameAndDescription}</td>
+                   <td>${dataPro[i].ItemNo}</td>
                  </tr>
            `;
         }
@@ -192,17 +194,17 @@ async function SearchAlmunsarifa() {
   if (Filter == "" || (Filter == null && type == "فلتر البحث")) {
     dataPro = [];
     getData().then((res) => {
-      res.data.data.map((item) => {
+      res.data.map((item) => {
         document.querySelector("tbody").innerHTML += `
               <tr>
-                  <td>${item.attributes.almustalam}</td>
-                  <td>${item.attributes.aljihatAltaaliba}</td>
-                  <td>${item.attributes.data}</td>
-                  <td>${item.attributes.RaqmAltalab}</td>
-                  <td>${item.attributes.Quantity}</td>
-                  <td>${item.attributes.alwahda}</td>
-                  <td>${item.attributes.ItemNameAndDescription}</td>
-                  <td>${item.attributes.ItemNo}</td>
+                  <td>${item.almustalam}</td>
+                  <td>${item.aljihatAltaaliba}</td>
+                  <td>${item.data}</td>
+                  <td>${item.RaqmAltalab}</td>
+                  <td>${item.Quantity}</td>
+                  <td>${item.alwahda}</td>
+                  <td>${item.ItemNameAndDescription}</td>
+                  <td>${item.ItemNo}</td>
         `;
       });
     });
@@ -212,112 +214,112 @@ async function SearchAlmunsarifa() {
 async function search_Almawadu_Almurjiea() {
   await getData();
   document.querySelector("tbody").innerHTML = "";
-  for (i = 0; i < dataPro.length; i++) {
+  for (i = 0; i < dataPro.length ; i++) {
     if (Filter != "" && type != "فلتر البحث") {
       if (type == "ItemNameAndDescription") {
-        if (dataPro[i].attributes.ItemNameAndDescription.includes(Filter)) {
+        if (dataPro[i].ItemNameAndDescription.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
               <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
             `;
         }
       } else if (type == "ItemNo") {
-        if (dataPro[i].attributes.ItemNo.includes(Filter)) {
+        if (dataPro[i].ItemNo.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
                   <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
           `;
         }
       } else if (type == "alwahda") {
-        if (dataPro[i].attributes.alwahda.includes(Filter)) {
+        if (dataPro[i].alwahda.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
               <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
           `;
         }
       } else if (type == "ReasonsForReturn") {
-        if (dataPro[i].attributes.ReasonsForReturn.includes(Filter)) {
+        if (dataPro[i].ReasonsForReturn.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
               <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
           `;
         }
       } else if (type == "data") {
-        if (dataPro[i].attributes.data.includes(Filter)) {
+        if (dataPro[i].data.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
               <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
           `;
         }
       } else if (type == "AljihatAlmurjiea") {
-        if (dataPro[i].attributes.AljihatAlmurjiea.includes(Filter)) {
+        if (dataPro[i].AljihatAlmurjiea.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
                   <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
           `;
         }
       } else if (type == "almaswuwl_fi_aljihat_almurjiea") {
         if (
-          dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea.includes(Filter)
+          dataPro[i].almaswuwl_fi_aljihat_almurjiea.includes(Filter)
         ) {
           document.querySelector("tbody").innerHTML += `
                 <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
           `;
         }
@@ -328,18 +330,18 @@ async function search_Almawadu_Almurjiea() {
   if (Filter == "" || Filter == null) {
     dataPro = [];
     getData().then((response) => {
-      const res = response.data.data;
+      const res = response.data;
       for (i = 0; i < res.length; i++) {
         document.querySelector("tbody").innerHTML += `
             <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
        </tr> 
            `;
       }
@@ -353,129 +355,129 @@ async function searchCostody() {
   dataPro.map((item) => {
     if (Filter != "") {
       if (type == "CardNumber") {
-        if (item.attributes.CardNumber.includes(Filter)) {
+        if (item.CardNumber.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "TypeCustody") {
-        if (item.attributes.TypeCustody.includes(Filter)) {
+        if (item.TypeCustody.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "DescriptionCustody") {
-        if (item.attributes.DescriptionCustody.includes(Filter)) {
+        if (item.DescriptionCustody.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "ManufactureCompany") {
-        if (item.attributes.ManufactureCompany.includes(Filter)) {
+        if (item.ManufactureCompany.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "Code") {
-        if (item.attributes.Code.includes(Filter)) {
+        if (item.Code.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "LocationCustody") {
-        if (item.attributes.LocationCustody.includes(Filter)) {
+        if (item.LocationCustody.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "ExchangeDate") {
-        if (item.attributes.ExchangeDate.includes(Filter)) {
+        if (item.ExchangeDate.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "ItemCondition") {
-        if (item.attributes.ItemCondition.includes(Filter)) {
+        if (item.ItemCondition.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       } else if (type == "DateOfExclusion") {
-        if (item.attributes.DateOfExclusion.includes(Filter)) {
+        if (item.DateOfExclusion.includes(Filter)) {
           document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
                 `;
         }
       }
@@ -486,18 +488,18 @@ async function searchCostody() {
     document.querySelector("tbody").innerHTML = "";
     dataPro = [];
     getData().then((response) => {
-      const res = response.data.data;
+      const res = response.data;
       res.map((item) => {
         document.querySelector("tbody").innerHTML += `
-        <td>${item.attributes.ItemCondition}</td>
-        <td>${item.attributes.ExchangeDate}</td>
-        <td>${item.attributes.LocationCustody}</td>
-        <td>${item.attributes.Code}</td>
-        <td>${item.attributes.ManufactureCompany}</td>
-        <td>${item.attributes.DescriptionCustody}</td>
-        <td>${item.attributes.TypeCustody}</td>
-        <td>${item.attributes.CardNumber}</td>
-        <td>${item.attributes.ClassResponsible}</td>
+        <td>${item.ItemCondition}</td>
+        <td>${item.ExchangeDate}</td>
+        <td>${item.LocationCustody}</td>
+        <td>${item.Code}</td>
+        <td>${item.ManufactureCompany}</td>
+        <td>${item.DescriptionCustody}</td>
+        <td>${item.TypeCustody}</td>
+        <td>${item.CardNumber}</td>
+        <td>${item.ClassResponsible}</td>
            `;
       });
     });

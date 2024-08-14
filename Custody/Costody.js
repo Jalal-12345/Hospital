@@ -18,9 +18,9 @@ console.log(section);
 
 function getData() {
   axios
-    .get("https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies")
+    .get("https://hospital-admin-1yqz.onrender.com/api/custodies")
     .then(function (response) {
-      ShowData(response.data.data);
+      ShowData(response.data);
     })
     .catch(function (error) {
       console.log(error);
@@ -42,27 +42,27 @@ SelectSection.value = "التمريض";
 function ShowData(res) {
   document.querySelector("tbody").innerHTML = "";
   const resFilter = res.filter((item) => {
-    return item.attributes.Section == SelectSection.value;
+    return item.Section == SelectSection.value;
   });
 
   resFilter.reverse();
 
   resFilter.map((item) => {
     document.querySelector("tbody").innerHTML += `
-             <td>${item.attributes.ItemCondition}</td>
-             <td>${item.attributes.ExchangeDate}</td>
-             <td>${item.attributes.LocationCustody}</td>
-             <td>${item.attributes.Code}</td>
-             <td>${item.attributes.ManufactureCompany}</td>
-             <td>${item.attributes.DescriptionCustody}</td>
-             <td>${item.attributes.TypeCustody}</td>
-             <td>${item.attributes.CardNumber}</td>
-             <td>${item.attributes.ClassResponsible}</td>
-             <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-             <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
-             <td><button onclick="returnCustody(${item.id})" class="return">ترجيع</button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item._id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item._id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item._id}')" class="return">ترجيع</button></td>
             `;
-    classResponsible.value = item.attributes.ClassResponsible;
+    classResponsible.value = item.ClassResponsible;
     dataPro = resFilter;
   });
 }
@@ -78,7 +78,7 @@ function splitData(data) {
 document.querySelector("form").addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const data = {
+  axios.post("https://hospital-admin-1yqz.onrender.com/api/custodies", {
     Section: section.value,
     ClassResponsible: classResponsible.value,
     CardNumber: CardNumber.value,
@@ -89,10 +89,6 @@ document.querySelector("form").addEventListener("submit", (e) => {
     LocationCustody: LocationCustody.value,
     ExchangeDate: splitData(ExchangeDate.value),
     ItemCondition: ItemCondition.value,
-  }
-
-  axios.post("https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies", {
-      data: data,
     })
     .then(function (response) {
       section.value = "";
@@ -141,7 +137,7 @@ document.querySelectorAll(".close").forEach((item) => {
 // find One Date
 function FindOneData(id) {
   const getOne = () =>
-    axios.get(`https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies/${id}`).then((response) => response).catch((err) => {
+    axios.get(`https://hospital-admin-1yqz.onrender.com/api/custodies/${id}`).then((response) => response).catch((err) => {
         createToast("error","#d00000","fa-solid fa-circle-exclamation","لقد حصلت مشكلة ما"),
         console.log(err);
       });
@@ -154,35 +150,37 @@ async function updateCostody(id) {
   document.querySelector(".buttons").innerHTML = `<button type="submit" id="SubmitUpdate"> تحديث المعلومات</button>`;
 
   const FindOne = await FindOneData(id);
-  const res = FindOne.data.data;
+  console.log(FindOne);
+  
+  const res = FindOne.data;
 
-  section.value = res.attributes.Section;
-  classResponsible.value = res.attributes.ClassResponsible;
-  CardNumber.value = res.attributes.CardNumber;
-  TypeCustody.value = res.attributes.TypeCustody;
-  DescriptionCustody.value = res.attributes.DescriptionCustody;
-  ManufactureCompany.value = res.attributes.ManufactureCompany;
-  Code.value = res.attributes.Code;
-  LocationCustody.value = res.attributes.LocationCustody;
-  ExchangeDate.value = res.attributes.ExchangeDate;
-  ItemCondition.value = res.attributes.ItemCondition;
+  section.value = res.Section;
+  classResponsible.value = res.ClassResponsible;
+  CardNumber.value = res.CardNumber;
+  TypeCustody.value = res.TypeCustody;
+  DescriptionCustody.value = res.DescriptionCustody;
+  ManufactureCompany.value = res.ManufactureCompany;
+  Code.value = res.Code;
+  LocationCustody.value = res.LocationCustody;
+  ExchangeDate.value = res.ExchangeDate;
+  ItemCondition.value = res.ItemCondition;
    
-  const data =  {
-    Section: section.value,
-    ClassResponsible: classResponsible.value,
-    CardNumber: CardNumber.value,
-    TypeCustody: TypeCustody.value,
-    DescriptionCustody: DescriptionCustody.value,
-    ManufactureCompany: ManufactureCompany.value,
-    Code: Code.value,
-    LocationCustody: LocationCustody.value,
-    ExchangeDate: splitData(ExchangeDate.value),
-    ItemCondition: ItemCondition.value,
-  }  
+
 
   document.querySelector("form > .buttons > #SubmitUpdate").addEventListener("click", (e) => {
       e.preventDefault();
-      axios.put(`https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies/${id}`, {data:data})
+      axios.put(`https://hospital-admin-1yqz.onrender.com/api/custodies/${id}`, {
+        Section: section.value,
+        ClassResponsible: classResponsible.value,
+        CardNumber: CardNumber.value,
+        TypeCustody: TypeCustody.value,
+        DescriptionCustody: DescriptionCustody.value,
+        ManufactureCompany: ManufactureCompany.value,
+        Code: Code.value,
+        LocationCustody: LocationCustody.value,
+        ExchangeDate: splitData(ExchangeDate.value),
+        ItemCondition: ItemCondition.value,
+      })
         .then((response) => {
           document.querySelector(".modal").style.display = "none";
           createToast("succses","#2d6a4f","fa-solid fa-circle-check","تم تحديث معلومات العهدة بنجاح");
@@ -197,7 +195,7 @@ async function updateCostody(id) {
 
 // delete
 function deleteCostody(id) {
-  axios.delete(`https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies/${id}`)
+  axios.delete(`https://hospital-admin-1yqz.onrender.com/api/custodies/${id}`)
   .then((response) => {
       createToast("succses","#2d6a4f","fa-solid fa-circle-check","تم حذف عهدة بنجاح");
       getData();
@@ -231,16 +229,16 @@ function createToast(type, color, icon, text) {
 async function returnCustody(id) {
   document.querySelectorAll(".modal")[1].style.display = "flex";
   const FindOne = await FindOneData(id);
-  const res = FindOne.data.data;
+  const res = FindOne.data;
 
-  document.querySelector(".almaswuwl_fi_aljihat_almurjiea").value =res.attributes.ClassResponsible;
-  document.querySelector(".AljihatAlmurjiea").value = res.attributes.Section;
-  document.querySelector(".ItemNameAndDescription").value = res.attributes.DescriptionCustody;
+  document.querySelector(".almaswuwl_fi_aljihat_almurjiea").value =res.ClassResponsible;
+  document.querySelector(".AljihatAlmurjiea").value = res.Section;
+  document.querySelector(".ItemNameAndDescription").value = res.DescriptionCustody;
 
   document.querySelector("#return").addEventListener("click", (e) => {
     e.preventDefault();
 
-    const data =  {
+    axios.post("https://hospital-admin-1yqz.onrender.com/api/almawadu-almurjieas", {
       ItemNo: document.querySelector(".ItemNo").value,
       ItemNameAndDescription: document.querySelector(".ItemNameAndDescription").value,
       alwahda: document.querySelector(".alwahda").value,
@@ -249,9 +247,7 @@ async function returnCustody(id) {
       AljihatAlmurjiea: document.querySelector(".AljihatAlmurjiea").value,
       ReasonsForReturn: document.querySelector(".ReasonsForReturn").value,
       almaswuwl_fi_aljihat_almurjiea: document.querySelector(".almaswuwl_fi_aljihat_almurjiea").value,
-    }
-
-    axios.post("https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almurjieas", {data:data})
+    })
       .then((response) => {
         createToast("succses","#2d6a4f","fa-solid fa-circle-check","تمت ترجيع عهدة بنجاح");
         document.querySelectorAll(".modal")[1].style.display = "none";
@@ -280,156 +276,156 @@ function searchCostody(value) {
   dataPro.map((item) => {
     if (value != "") {
       if (select == "CardNumber") {
-        if (item.attributes.CardNumber.includes(value)) {
+        if (item.CardNumber.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "TypeCustody") {
-        if (item.attributes.TypeCustody.includes(value)) {
+        if (item.TypeCustody.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "DescriptionCustody") {
-        if (item.attributes.DescriptionCustody.includes(value)) {
+        if (item.DescriptionCustody.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "ManufactureCompany") {
-        if (item.attributes.ManufactureCompany.includes(value)) {
+        if (item.ManufactureCompany.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "Code") {
-        if (item.attributes.Code.includes(value)) {
+        if (item.Code.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "LocationCustody") {
-        if (item.attributes.LocationCustody.includes(value)) {
+        if (item.LocationCustody.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "ExchangeDate") {
-        if (item.attributes.ExchangeDate.includes(value)) {
+        if (item.ExchangeDate.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "ItemCondition") {
-        if (item.attributes.ItemCondition.includes(value)) {
+        if (item.ItemCondition.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       } else if (select == "DateOfExclusion") {
-        if (item.attributes.DateOfExclusion.includes(value)) {
+        if (item.DateOfExclusion.includes(value)) {
           document.querySelector("tbody").innerHTML += `
-                 <td>${item.attributes.DateOfExclusion}</td>
-                 <td>${item.attributes.ItemCondition}</td>
-                 <td>${item.attributes.ExchangeDate}</td>
-                 <td>${item.attributes.LocationCustody}</td>
-                 <td>${item.attributes.Code}</td>
-                 <td>${item.attributes.ManufactureCompany}</td>
-                 <td>${item.attributes.DescriptionCustody}</td>
-                 <td>${item.attributes.TypeCustody}</td>
-                 <td>${item.attributes.CardNumber}</td>
-                 <td>${item.attributes.ClassResponsible}</td>
-                 <td><button onclick="updateCostody(${item.id})" class="update"><i class="fa-solid fa-pen"></i></button></td>
-                 <td><button onclick="deleteCostody(${item.id})" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td>${item.ItemCondition}</td>
+             <td>${item.ExchangeDate}</td>
+             <td>${item.LocationCustody}</td>
+             <td>${item.Code}</td>
+             <td>${item.ManufactureCompany}</td>
+             <td>${item.DescriptionCustody}</td>
+             <td>${item.TypeCustody}</td>
+             <td>${item.CardNumber}</td>
+             <td>${item.ClassResponsible}</td>
+             <td><button onclick="updateCostody('${item.id}')" class="update"><i class="fa-solid fa-pen"></i></button></td>
+             <td><button onclick="deleteCostody('${item.id}')" class="delete"><i class="fa-solid fa-trash"></i></button></td>
+             <td><button onclick="returnCustody('${item.id}')" class="return">ترجيع</button></td>
                 `;
         }
       }

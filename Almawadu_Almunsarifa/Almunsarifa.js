@@ -1,3 +1,5 @@
+
+
 // var document
 const almustalam = document.querySelector(".almustalam");
 const aljihatAltaaliba = document.querySelector(".aljihatAltaaliba");
@@ -11,9 +13,10 @@ let dataPro = [];
 // get data and show data
 
 function getData() {
-  axios.get("https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almunsarifas")
+  axios.get("https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas")
     .then((res) => {
-      ShowData(res.data.data);
+      console.log(res);
+      ShowData(res.data);
     })
     .catch((err) => {
       console.log(err);
@@ -27,16 +30,16 @@ function ShowData(res) {
     dataPro.push(item);
     document.querySelector("tbody").innerHTML += `
     <tr>
-        <td>${item.attributes.almustalam}</td>
-        <td>${item.attributes.aljihatAltaaliba}</td>
-        <td>${item.attributes.data}</td>
-        <td>${item.attributes.RaqmAltalab}</td>
-        <td>${item.attributes.Quantity}</td>
-        <td>${item.attributes.alwahda}</td>
-        <td>${item.attributes.ItemNameAndDescription}</td>
-        <td>${item.attributes.ItemNo}</td>
-        <td><button onclick="updateAlmunsarifa(${item.id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-        <td><button onclick="deleteAlmunsarifa(${item.id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+        <td>${item.almustalam}</td>
+        <td>${item.aljihatAltaaliba}</td>
+        <td>${item.data}</td>
+        <td>${item.RaqmAltalab}</td>
+        <td>${item.Quantity}</td>
+        <td>${item.alwahda}</td>
+        <td>${item.ItemNameAndDescription}</td>
+        <td>${item.ItemNo}</td>
+        <td><button onclick="updateAlmunsarifa('${item._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+        <td><button onclick="deleteAlmunsarifa('${item._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
       </tr>
 `;
   });
@@ -92,8 +95,9 @@ function createToast(type, color, icon, text) {
 
 document.querySelector("form").addEventListener("submit", (e) => {
   e.preventDefault();
-  
-  const data =  {
+
+
+  axios.post("https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas", {
     almustalam: almustalam.value,
     aljihatAltaaliba: aljihatAltaaliba.value,
     RaqmAltalab: RaqmAltalab.value,
@@ -102,9 +106,7 @@ document.querySelector("form").addEventListener("submit", (e) => {
     ItemNo: ItemNo.value,
     ItemNameAndDescription: ItemNameAndDescription.value,
     data: splitData(data.value),
-  }
-
-  axios.post("https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almunsarifas", {data:data})
+  })
     .then((response) => {
       createCustody(
         aljihatAltaaliba.value,
@@ -121,8 +123,8 @@ document.querySelector("form").addEventListener("submit", (e) => {
       ItemNameAndDescription.value = "";
       data.value = "";
       document.querySelector(".modal").style.display = "none";
-  
       createToast("succses","#2d6a4f","fa-solid fa-circle-check","تمت إضافة عهدة جديدة");
+      dataPro = [];
       getData();
     })
     .catch((err) => {
@@ -132,13 +134,11 @@ document.querySelector("form").addEventListener("submit", (e) => {
 });
 
 function createCustody(Section,ClassResponsible,ExchangeDate,DescriptionCustody) {
-  axios.post("https://positive-flower-edb7000224.strapiapp.com/admin/api/custodies", {
-      data: {
+  axios.post("https://hospital-admin-1yqz.onrender.com/api/custodies", {
         Section,
         ClassResponsible,
         ExchangeDate,
         DescriptionCustody,
-      },
     })
     .then((response) => {
       console.log(response);
@@ -153,17 +153,18 @@ function createCustody(Section,ClassResponsible,ExchangeDate,DescriptionCustody)
 // FindOne
 
 function FindOne(id) {
-  axios.get(`https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almunsarifas/${id}`)
+  axios.get(`https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas/${id}`)
     .then((response) => {
-      const res = response.data.data;
-      almustalam.value = res.attributes.almustalam;
-      aljihatAltaaliba.value = res.attributes.aljihatAltaaliba;
-      RaqmAltalab.value = res.attributes.RaqmAltalab;
-      alwahda.value = res.attributes.alwahda;
-      Quantity.value = res.attributes.Quantity;
-      ItemNameAndDescription.value = res.attributes.ItemNameAndDescription;
-      ItemNo.value = res.attributes.ItemNo;
-      data.value = res.attributes.data;
+      console.log(response);
+      const res = response.data;
+      almustalam.value = res.almustalam;
+      aljihatAltaaliba.value = res.aljihatAltaaliba;
+      RaqmAltalab.value = res.RaqmAltalab;
+      alwahda.value = res.alwahda;
+      Quantity.value = res.Quantity;
+      ItemNameAndDescription.value = res.ItemNameAndDescription;
+      ItemNo.value = res.ItemNo;
+      data.value = res.data;
       return;
     })
     .catch((err) => {
@@ -173,6 +174,7 @@ function FindOne(id) {
 
 // update
 function updateAlmunsarifa(id) {
+  console.log(typeof id);
   FindOne(id);
   document.querySelector(".modal").style.display = "flex";
   document.querySelector(".buttons").innerHTML = `<button id="UpdateSubmit">تحديث المعلومات</button>`;
@@ -180,7 +182,7 @@ function updateAlmunsarifa(id) {
   document.getElementById("UpdateSubmit").addEventListener("click", (e) => {
     e.preventDefault();
     
-    const data =  {
+    axios.put(`https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas/${id}`, {
       almustalam: almustalam.value,
       aljihatAltaaliba: aljihatAltaaliba.value,
       RaqmAltalab: RaqmAltalab.value,
@@ -188,13 +190,12 @@ function updateAlmunsarifa(id) {
       Quantity: Quantity.value,
       ItemNo: ItemNo.value,
       ItemNameAndDescription: ItemNameAndDescription.value,
-      data: splitData(data.value),
-    }
-
-    axios.put(`https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almunsarifas/${id}`, {data:data})
+      data: splitData(data.value)
+    })
       .then((res) => {
         createToast("succses","#2d6a4f","fa-solid fa-circle-check","تمت تعديل عهدة بنجاح");
         document.querySelector(".modal").style.display = "none";
+        dataPro = [];
         getData();
       })
       .catch((err) => {
@@ -207,9 +208,10 @@ function updateAlmunsarifa(id) {
 // delete
 
 function deleteAlmunsarifa(id) {
-  axios.delete(`https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almunsarifas/${id}`)
+  axios.delete(`https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas/${id}`)
     .then((response) => {
-      createToast("succses","#2d6a4f","fa-solid fa-circle-check","تمت تعديل عهدة بنجاح");
+      createToast("succses","#2d6a4f","fa-solid fa-circle-check","تمت حذف عهدة بنجاح");
+      dataPro = [];
       getData();
     })
     .catch((err) => {
@@ -225,122 +227,120 @@ const selectSearch = document.querySelector("select")
 async function Search(value){
   document.querySelector("tbody").innerHTML = "";
   for(i=0; i<dataPro.length; i++){
-    console.log("hello");
-    
    if(value != "" && selectSearch.value != "فلتر البحث"){
            if(selectSearch.value == "ItemNameAndDescription"){
-              if(dataPro[i].attributes.ItemNameAndDescription.includes(value)){
+              if(dataPro[i].ItemNameAndDescription.includes(value)){
                 document.querySelector("tbody").innerHTML += `
                 <tr>
-                    <td>${dataPro[i].attributes.almustalam}</td>
-                    <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                    <td>${dataPro[i].attributes.data}</td>
-                    <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                    <td>${dataPro[i].attributes.Quantity}</td>
-                    <td>${dataPro[i].attributes.alwahda}</td>
-                    <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                    <td>${dataPro[i].attributes.ItemNo}</td>
-                    <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                    <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
                   </tr>
             `;
            }
            }else if(selectSearch.value == "ItemNo"){
-            if(dataPro[i].attributes.ItemNo.includes(value)){
+            if(dataPro[i].ItemNo.includes(value)){
               document.querySelector("tbody").innerHTML += `
-              <tr>
-                  <td>${dataPro[i].attributes.almustalam}</td>
-                  <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                  <td>${dataPro[i].attributes.data}</td>
-                  <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                  <td>${dataPro[i].attributes.Quantity}</td>
-                  <td>${dataPro[i].attributes.alwahda}</td>
-                  <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                  <td>${dataPro[i].attributes.ItemNo}</td>
-                  <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                  <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-                </tr>
+                <tr>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
           `; }
            }else if (selectSearch.value == "alwahda"){
-            if(dataPro[i].attributes.alwahda.includes(value)){
+            if(dataPro[i].alwahda.includes(value)){
               document.querySelector("tbody").innerHTML += `
-              <tr>
-                  <td>${dataPro[i].attributes.almustalam}</td>
-                  <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                  <td>${dataPro[i].attributes.data}</td>
-                  <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                  <td>${dataPro[i].attributes.Quantity}</td>
-                  <td>${dataPro[i].attributes.alwahda}</td>
-                  <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                  <td>${dataPro[i].attributes.ItemNo}</td>
-                  <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                  <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-             </tr>
+                  <tr>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
           `;
         } 
            } else if (selectSearch.value == "RaqmAltalab") {
-            if(dataPro[i].attributes.RaqmAltalab.includes(value)){
+            if(dataPro[i].RaqmAltalab.includes(value)){
               document.querySelector("tbody").innerHTML += `
-              <tr>
-                  <td>${dataPro[i].attributes.almustalam}</td>
-                  <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                  <td>${dataPro[i].attributes.data}</td>
-                  <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                  <td>${dataPro[i].attributes.Quantity}</td>
-                  <td>${dataPro[i].attributes.alwahda}</td>
-                  <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                  <td>${dataPro[i].attributes.ItemNo}</td>
-                  <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                  <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-                </tr>
+                  <tr>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
           `;            } 
            }else if (selectSearch.value == "data"){
-            if(dataPro[i].attributes.data.includes(value)){
+            if(dataPro[i].data.includes(value)){
               document.querySelector("tbody").innerHTML += `
-              <tr>
-                  <td>${dataPro[i].attributes.almustalam}</td>
-                  <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                  <td>${dataPro[i].attributes.data}</td>
-                  <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                  <td>${dataPro[i].attributes.Quantity}</td>
-                  <td>${dataPro[i].attributes.alwahda}</td>
-                  <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                  <td>${dataPro[i].attributes.ItemNo}</td>
-                  <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                  <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-                </tr>
+            <tr>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
           `;            } 
            }else if(selectSearch.value == "aljihatAltaaliba"){
-            if(dataPro[i].attributes.aljihatAltaaliba.includes(value)){
+            if(dataPro[i].aljihatAltaaliba.includes(value)){
               document.querySelector("tbody").innerHTML += `
-              <tr>
-                  <td>${dataPro[i].attributes.almustalam}</td>
-                  <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                  <td>${dataPro[i].attributes.data}</td>
-                  <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                  <td>${dataPro[i].attributes.Quantity}</td>
-                  <td>${dataPro[i].attributes.alwahda}</td>
-                  <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                  <td>${dataPro[i].attributes.ItemNo}</td>
-                  <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                  <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-                </tr>
+                <tr>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
           `;            } 
            }else if (selectSearch.value == "almustalam"){
-            if(dataPro[i].attributes.almustalam.includes(value)){
+            if(dataPro[i].almustalam.includes(value)){
               document.querySelector("tbody").innerHTML += `
-              <tr>
-                  <td>${dataPro[i].attributes.almustalam}</td>
-                  <td>${dataPro[i].attributes.aljihatAltaaliba}</td>
-                  <td>${dataPro[i].attributes.data}</td>
-                  <td>${dataPro[i].attributes.RaqmAltalab}</td>
-                  <td>${dataPro[i].attributes.Quantity}</td>
-                  <td>${dataPro[i].attributes.alwahda}</td>
-                  <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-                  <td>${dataPro[i].attributes.ItemNo}</td>
-                  <td><button onclick="updateAlmunsarifa(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-                  <td><button onclick="deleteAlmunsarifa(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-                </tr>
+            <tr>
+                    <td>${dataPro[i].almustalam}</td>
+                    <td>${dataPro[i].aljihatAltaaliba}</td>
+                    <td>${dataPro[i].data}</td>
+                    <td>${dataPro[i].RaqmAltalab}</td>
+                    <td>${dataPro[i].Quantity}</td>
+                    <td>${dataPro[i].alwahda}</td>
+                    <td>${dataPro[i].ItemNameAndDescription}</td>
+                    <td>${dataPro[i].ItemNo}</td>
+                    <td><button onclick="updateAlmunsarifa('${dataPro[i].id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+                    <td><button onclick="deleteAlmunsarifa('${dataPro[i].id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+                  </tr>
           `;
         } 
       }
@@ -350,7 +350,7 @@ async function Search(value){
 
        if(value == ""){
         dataPro = [];
-        ShowData(await getData());
+        getData();
       }
    }
   

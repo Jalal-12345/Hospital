@@ -1,6 +1,6 @@
 // get data 
 function getData(){
-  const FindData = axios.get("https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almurjieas").then(res=>res).catch(err=>console.log(err));
+  const FindData = axios.get("https://hospital-admin-1yqz.onrender.com/api/almawadu-almurjieas").then(res=>res).catch(err=>console.log(err));
   return FindData;
 }
 
@@ -9,28 +9,28 @@ function getData(){
 let dataPro = [];
 
 async function ShowData(){
-  document.querySelector("tbody").innerHTML = ''
+  document.querySelector("tbody").innerHTML = '';
   const FindData = await getData();
-  const res = FindData.data.data;
+  const res = FindData.data;
   res.map(item=>{
     dataPro.push(item);
     document.querySelector("tbody").innerHTML += `
     <tr>
-         <td>${item.attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${item.attributes.ReasonsForReturn}</td>
-         <td>${item.attributes.AljihatAlmurjiea}</td>
-         <td>${item.attributes.data}</td>
-         <td>${item.attributes.Quantity}</td>
-         <td>${item.attributes.alwahda}</td>
-         <td>${item.attributes.ItemNameAndDescription}</td>
-         <td>${item.attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${item.id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${item.id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+         <td>${item.almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${item.ReasonsForReturn}</td>
+         <td>${item.AljihatAlmurjiea}</td>
+         <td>${item.data}</td>
+         <td>${item.Quantity}</td>
+         <td>${item.alwahda}</td>
+         <td>${item.ItemNameAndDescription}</td>
+         <td>${item.ItemNo}</td>
+         <td><button onclick="updateDate('${item._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${item._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
        </tr> 
 `
   })
 
-}
+};
 ShowData();
 
 // split data
@@ -44,7 +44,7 @@ function splitData(data) {
 
 async function DeleteDate(id){
    console.log(id);
-   axios.delete(`https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almurjieas/${id}`)
+   axios.delete(`https://hospital-admin-1yqz.onrender.com/api/almawadu-almurjieas/${id}`)
    .then(res =>{
     createToast("succses","#2d6a4f","fa-solid fa-circle-check","تم حذف  بنجاح")
     ShowData();
@@ -59,7 +59,7 @@ async function DeleteDate(id){
 // Find One 
 
  function FindOne(id){
-  const getOne = axios.get(`https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almurjieas/${id}`).then(res=>res).catch(err=>err);
+  const getOne = axios.get(`https://hospital-admin-1yqz.onrender.com/api/almawadu-almurjieas/${id}`).then(res=>res).catch(err=>err);
   return getOne;
  }
 
@@ -67,23 +67,26 @@ async function DeleteDate(id){
 async function updateDate(id){
   document.querySelector('.modal').style.display = "flex" 
   const response = await FindOne(id);
-  const res = await response.data.data;
+  console.log(response);
+  const res = await response.data;
 
-  document.querySelector(".ItemNo").value = res.attributes.ItemNo;
-  document.querySelector(".ItemNameAndDescription").value = res.attributes.ItemNameAndDescription;
-  document.querySelector(".alwahda").value = res.attributes.alwahda;
-  document.querySelector(".Quantity").value = res.attributes.Quantity;
-  document.querySelector(".data").value = res.attributes.data;
-  document.querySelector(".AljihatAlmurjiea").value = res.attributes.AljihatAlmurjiea;
-  document.querySelector(".almaswuwl_fi_aljihat_almurjiea").value = res.attributes.almaswuwl_fi_aljihat_almurjiea;
-  document.querySelector(".ReasonsForReturn").value = res.attributes.ReasonsForReturn;
+  document.querySelector(".ItemNo").value = res.ItemNo;
+  document.querySelector(".ItemNameAndDescription").value = res.ItemNameAndDescription;
+  document.querySelector(".alwahda").value = res.alwahda;
+  document.querySelector(".Quantity").value = res.Quantity;
+  document.querySelector(".data").value = res.data;
+  document.querySelector(".AljihatAlmurjiea").value = res.AljihatAlmurjiea;
+  document.querySelector(".almaswuwl_fi_aljihat_almurjiea").value = res.almaswuwl_fi_aljihat_almurjiea;
+  document.querySelector(".ReasonsForReturn").value = res.ReasonsForReturn;
 
   // click submit 
 
   document.getElementById("submit").addEventListener("click", (e)=>{
      e.preventDefault();
 
-     const data = {
+
+      axios.put(`https://hospital-admin-1yqz.onrender.com/api/almawadu-almurjieas/${id}`, {
+
       ItemNo: document.querySelector(".ItemNo").value,
       ItemNameAndDescription: document.querySelector(".ItemNameAndDescription").value,
       alwahda:document.querySelector(".alwahda").value,
@@ -92,16 +95,17 @@ async function updateDate(id){
       AljihatAlmurjiea: document.querySelector(".AljihatAlmurjiea").value,
       ReasonsForReturn: document.querySelector(".ReasonsForReturn").value,
       almaswuwl_fi_aljihat_almurjiea:document.querySelector(".almaswuwl_fi_aljihat_almurjiea").value
-    }
 
-      axios.put(`https://positive-flower-edb7000224.strapiapp.com/admin/api/almawadu-almurjieas/${id}`, {data : data}).then(res=>{
+      }).then(res=>{
         createToast("succses","#2d6a4f","fa-solid fa-circle-check","تمت تعديل عهدة بنجاح");
+        document.querySelector("tbody").innerHTML = "";
+        document.querySelector('.modal').style.display = "none"; 
         ShowData();
       })
       .catch(err=>{
         createToast("error","#d00000","fa-solid fa-circle-exclamation","لقد حصلت مشكلة ما");
         console.log(err);
-      })
+      });
   })
   
 }
@@ -141,127 +145,134 @@ function createToast(type, color, icon, text) {
 const selectSearch = document.querySelector("select");
 
 function search_Almawadu_Almurjiea(value){
+
   document.querySelector("tbody").innerHTML = "";
-  for(i=0; i<dataPro.length; i++){
-   if(value != "" && selectSearch.value != "فلتر البحث"){
-           if(selectSearch.value == "ItemNameAndDescription"){
-              if(dataPro[i].attributes.ItemNameAndDescription.includes(value)){
-                document.querySelector("tbody").innerHTML += `
+  for (i = 0; i < dataPro.length ; i++) {
+    if (value != "" && selectSearch.value != "فلتر البحث") {  
+      if (selectSearch.value == "ItemNameAndDescription") {
+        if (dataPro[i].ItemNameAndDescription.includes(value)) {
+          document.querySelector("tbody").innerHTML += `
               <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
        </tr> 
             `;
-           }
-           }else if(selectSearch.value == "ItemNo"){
-            if(dataPro[i].attributes.ItemNo.includes(value)){
-              document.querySelector("tbody").innerHTML += `
-            <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-       </tr> 
-          `; }
-           }else if (selectSearch.value == "alwahda"){
-            if(dataPro[i].attributes.alwahda.includes(value)){
-              document.querySelector("tbody").innerHTML += `
-                <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-       </tr> 
-          `;            } 
-           } else if (selectSearch.value == "ReasonsForReturn") {
-            if(dataPro[i].attributes.ReasonsForReturn.includes(value)){
-              document.querySelector("tbody").innerHTML += `
-                  <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-       </tr> 
-          `;            } 
-           }else if (selectSearch.value == "data"){
-            if(dataPro[i].attributes.data.includes(value)){
-              document.querySelector("tbody").innerHTML += `
-                <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-       </tr> 
-          `;            } 
-           }else if(selectSearch.value == "AljihatAlmurjiea"){
-            if(dataPro[i].attributes.AljihatAlmurjiea.includes(value)){
-              document.querySelector("tbody").innerHTML += `
-                  <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
-       </tr> 
-          `;            } 
-           }else if (selectSearch.value == "almaswuwl_fi_aljihat_almurjiea"){
-            if(dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea.includes(value)){
-              document.querySelector("tbody").innerHTML += `
-                      <tr>
-         <td>${dataPro[i].attributes.almaswuwl_fi_aljihat_almurjiea}</td>
-         <td>${dataPro[i].attributes.ReasonsForReturn}</td>
-         <td>${dataPro[i].attributes.AljihatAlmurjiea}</td>
-         <td>${dataPro[i].attributes.data}</td>
-         <td>${dataPro[i].attributes.Quantity}</td>
-         <td>${dataPro[i].attributes.alwahda}</td>
-         <td>${dataPro[i].attributes.ItemNameAndDescription}</td>
-         <td>${dataPro[i].attributes.ItemNo}</td>
-         <td><button onclick="updateDate(${dataPro[i].id})" id="update"><i class="fa-solid fa-pen"></i></button></td>
-         <td><button onclick="DeleteDate(${dataPro[i].id})" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+        }
+      } else if (selectSearch.value == "ItemNo") {
+        if (dataPro[i].ItemNo.includes(value)) {
+          document.querySelector("tbody").innerHTML += `
+          <tr>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
        </tr> 
           `;
-        } 
-      }
-
         }
-       }
+      } else if (selectSearch.value == "alwahda") {
+        if (dataPro[i].alwahda.includes(value)) {
+          document.querySelector("tbody").innerHTML += `
+          <tr>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+       </tr> 
+          `;
+        }
+      } else if (selectSearch.value == "ReasonsForReturn") {
+        if (dataPro[i].ReasonsForReturn.includes(value)) {
+          document.querySelector("tbody").innerHTML += `
+          <tr>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+       </tr> 
+          `;
+        }
+      } else if (selectSearch.value == "data") {
+        if (dataPro[i].data.includes(value)) {
+          document.querySelector("tbody").innerHTML += `
+          <tr>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+       </tr> 
+          `;
+        }
+      } else if (selectSearch.value == "AljihatAlmurjiea") {
+        if (dataPro[i].AljihatAlmurjiea.includes(value)) {
+          document.querySelector("tbody").innerHTML += `
+          <tr>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+       </tr> 
+          `;
+        }
+      } else if (selectSearch.value == "almaswuwl_fi_aljihat_almurjiea") {
+        if (
+          dataPro[i].almaswuwl_fi_aljihat_almurjiea.includes(value)
+        ) {
+          document.querySelector("tbody").innerHTML += `
+                  <tr>
+         <td>${dataPro[i].almaswuwl_fi_aljihat_almurjiea}</td>
+         <td>${dataPro[i].ReasonsForReturn}</td>
+         <td>${dataPro[i].AljihatAlmurjiea}</td>
+         <td>${dataPro[i].data}</td>
+         <td>${dataPro[i].Quantity}</td>
+         <td>${dataPro[i].alwahda}</td>
+         <td>${dataPro[i].ItemNameAndDescription}</td>
+         <td>${dataPro[i].ItemNo}</td>
+         <td><button onclick="updateDate('${dataPro[i]._id}')" id="update"><i class="fa-solid fa-pen"></i></button></td>
+         <td><button onclick="DeleteDate('${dataPro[i]._id}')" id="delete"><i class="fa-solid fa-trash"></i></button></td>
+       </tr> 
+          `;
+        }
+      }
+    }
+  }
 
        if(value == ""){
         dataPro = [];
@@ -272,5 +283,5 @@ function search_Almawadu_Almurjiea(value){
 
 function Print(){
   const input = document.getElementById("InputSearch");
- window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Almawadu_Almurjiea&&type=${selectSearch.value}&&Filter=${input.value}`
+ window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Almawadu_Almurjiea&&selectSearch.value=${selectSearch.value}&&value=${input.value}`
 }
