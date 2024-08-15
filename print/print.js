@@ -20,7 +20,7 @@ async function getData() {
               <th>إسم الصنف ووصفه</th>
               <th>رقم الصنف</th>
 </tr>`;
-    const response = await axios.get("http://localhost:3000/api/almawadu-almunsarifas").then((res) => res).catch((err) => err);
+    const response = await axios.get("https://hospital-admin-1yqz.onrender.com/almawadu-almunsarifas").then((res) => res).catch((err) => err);
     response.data.map((item) => dataPro.push(item));
 
     return response;
@@ -36,7 +36,7 @@ async function getData() {
             <th>إسم الصنف ووصفه</th>
             <th>رقم الصنف</th>
     </tr>`;
-    const response = await axios.get("http://localhost:3000/api/almawadu-almurjieas").then((res) => res).catch((err) => err);
+    const response = await axios.get("https://hospital-admin-1yqz.onrender.com/api/almawadu-almurjieas").then((res) => res).catch((err) => err);
     await response.data.map((item) => dataPro.push(item));
     
     return response;
@@ -53,7 +53,7 @@ async function getData() {
               <th>رقم البطاقة</th>
               <th>مسؤول القسم</th>
     </tr>`;
-    const response = await axios.get("http://localhost:3000/api/custodies").then((res) => res).catch((err) => err);
+    const response = await axios.get("https://hospital-admin-1yqz.onrender.com/api/custodies").then((res) => res).catch((err) => err);
     await response.data.map((item) => dataPro.push(item));
 
     return response;
