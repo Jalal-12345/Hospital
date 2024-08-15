@@ -283,5 +283,5 @@ function search_Almawadu_Almurjiea(value){
 
 function Print(){
   const input = document.getElementById("InputSearch");
- window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Almawadu_Almurjiea&&selectSearch.value=${selectSearch.value}&&value=${input.value}`
+ window.location = `https://jalal-12345.github.io/hospital/print/print.html?print=Almawadu_Almurjiea&&selectSearch.value=${selectSearch.value}&&value=${input.value}`
 }
