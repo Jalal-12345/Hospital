@@ -440,5 +440,5 @@ const selection = document.querySelector(".box-Search > select");
 // print
 function Print() {
   const input = document.getElementById("InputSearch");
-  window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Costody&&type=${selection.value}&&Filter=${input.value}`;
+  window.location = `https://jalal-12345.github.io/hospital/print/print.html?print=Costody&&type=${selection.value}&&Filter=${input.value}`;
 };
