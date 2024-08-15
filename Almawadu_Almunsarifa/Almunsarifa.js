@@ -359,5 +359,5 @@ async function Search(value){
    // print
 function Print() {
   const input = document.getElementById("InputSearch");
-  window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Almunsarifa&&type=${selectSearch.value}&&Filter=${input.value}`
+  window.location = `https://jalal-12345.github.io/hospital/print/print.html?print=Almunsarifa&&type=${selectSearch.value}&&Filter=${input.value}`
 }
