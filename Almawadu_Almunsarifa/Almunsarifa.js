@@ -13,8 +13,11 @@ let dataPro = [];
 // get data and show data
 
 function getData() {
+  document.getElementById("loader-model").style.display = "flex"
   axios.get("https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas")
     .then((res) => {
+      document.getElementById("loader-model").style.opacity = "0"
+      setTimeout(()=>  document.getElementById("loader-model").style.display = "flex", 1000);
       console.log(res);
       ShowData(res.data);
     })
@@ -359,5 +362,5 @@ async function Search(value){
    // print
 function Print() {
   const input = document.getElementById("InputSearch");
-  window.location = `https://jalal-12345.github.io/hospital/print/print.html?print=Almunsarifa&&type=${selectSearch.value}&&Filter=${input.value}`
+  window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Almunsarifa&&type=${selectSearch.value}&&Filter=${input.value}`
 }

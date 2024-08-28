@@ -17,10 +17,14 @@ console.log(section);
 // start  get Costody //
 
 function getData() {
+  document.getElementById("loader-model").style.display = "flex";
   axios
     .get("https://hospital-admin-1yqz.onrender.com/api/custodies")
     .then(function (response) {
       ShowData(response.data);
+      document.getElementById("loader-model").style.opacity = "0";
+      setTimeout(()=>document.getElementById("loader-model").style.display = "none",1000);
+
     })
     .catch(function (error) {
       console.log(error);
@@ -440,5 +444,5 @@ const selection = document.querySelector(".box-Search > select");
 // print
 function Print() {
   const input = document.getElementById("InputSearch");
-  window.location = `https://jalal-12345.github.io/hospital/print/print.html?print=Costody&&type=${selection.value}&&Filter=${input.value}`;
+  window.location = `http://127.0.0.1:5500/FrontEnd/print/print.html?print=Costody&&type=${selection.value}&&Filter=${input.value}`;
 };

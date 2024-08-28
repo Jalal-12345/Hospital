@@ -21,4 +21,5 @@ setTimeout(()=> {
   setTimeout(()=> loader.style.display= "none" , 1000)
 }, 10000);
 
+loader.style.display = "none"
 
