@@ -17,7 +17,7 @@ function getData() {
   axios.get("https://hospital-admin-1yqz.onrender.com/api/almawadu-almunsarifas")
     .then((res) => {
       document.getElementById("loader-model").style.opacity = "0"
-      setTimeout(()=>  document.getElementById("loader-model").style.display = "flex", 1000);
+      setTimeout(()=>  document.getElementById("loader-model").style.display = "none", 1000);
       console.log(res);
       ShowData(res.data);
     })
